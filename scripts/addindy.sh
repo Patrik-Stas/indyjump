@@ -1,26 +1,24 @@
 #!/bin/bash
+source $(dirname "$0")/util.sh
 
-SOURCE="$1"
-VERSION="$2"
+LIBRARY="$1"
+TAG="$2"
 
-
-if [ -z "$VERSION" ]; then
+if [ -z "$LIBRARY" ]; then
 	echo "Version was not specified"
 	exit -1
 fi
 
-if [ ! -f "$SOURCE" ]; then
+if [ ! -z "$TAG" ]; then
    echo "Source $SOURCE is not a file."
 fi
 
-LIB_NAME=`basename $SOURCE`
-if [[ "$SOURCE" =~ .*\."$LIB_EXT" ]]; then
+LIB_PATH=`getFullPath $LIBRARY`
+
+if [ ! -f "$LIB_PATH" ]; then
+   echo "File $FILE does not exist."
+   exit -1
+else 
     TARGET="/usr/local/lib/storage/indy/$VERSION-$LIB_NAME"
-    cp "$SOURCE" "$TARGET"
-else
-    echo "Source file $SOURCE is not .${LIB_EXT} library."
-    exit -1
+	cp "$SOURCE" "$TARGET"
 fi
-
-
-
