@@ -1,0 +1,16 @@
+#!/bin/bash
+source $(dirname "$0")/util.sh
+PROVISION_TAG=${1:-latest}
+
+
+$(dirname "$0")/ij-compile-one "libindy" || exitWithErrMsg "Failed to compile libindy"
+$(dirname "$0")/ij-provision-one "libindy" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libindy as '$PROVISION_TAG'" 
+$(dirname "$0")/ij-set-one "libindy" "$PROVISION_TAG" || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libindy" 
+
+$(dirname "$0")/ij-compile-one "libnullpay" || exitWithErrMsg "Failed to compile libnullpay"  
+$(dirname "$0")/ij-provision-one "libnullpay" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libnullpay as '$PROVISION_TAG'" 
+$(dirname "$0")/ij-set-one "libnullpay" "$PROVISION_TAG" || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libnullpay" 
+
+$(dirname "$0")/ij-compile-one "libvcx" "$PROVISION_TAG" || exitWithErrMsg "Failed to compile libvcx" 
+$(dirname "$0")/ij-provision-one "libvcx" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libvcx as '$PROVISION_TAG'" 
+$(dirname "$0")/ij-set-one "libvcx" "$PROVISION_TAG"  || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libvcx" 
