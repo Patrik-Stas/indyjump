@@ -16,15 +16,19 @@ if [ -z "$PROVISION_TAG" ]; then
 fi
 
 # SRC_BASE_PATH=`getBasePath "$LIBRARY"` || exit 1
+
 LIB_PATH=`getFullPath "$LIBRARY"` || exit 1
-INDYJUMP_TARGET=`getPathForManagedBinary "$LIBRARY" "$PROVISION_TAG"`
-
 echo "Will take library at: $LIB_PATH"
-echo "Move it to indyjump directory: $INDYJUMP_TARGET"
-
 if [ ! -f "$LIB_PATH" ]; then
    exitWithErrMsg "File $FILE does not exist."
-else 
-	cp "$LIB_PATH" "$INDYJUMP_TARGET"
-	echo "Proovisioned $LIBRARY with tag $PROVISION_TAG"
-fi
+fi;
+
+INDYJUMP_TARGET=`getPathForManagedBinary "$LIBRARY" "$PROVISION_TAG"`
+echo "The binary will be copied to: $INDYJUMP_TARGET"
+
+MANAGED_BINARY_DIR=`dirname "$INDYJUMP_TARGET"`  || exitWithErrMsg "Failed to determine directory where indyjump managed binary will be stored."     
+mkdir -p "$MANAGED_BINARY_DIR"
+
+cp "$LIB_PATH" "$INDYJUMP_TARGET"
+echo "Proovisioned $LIBRARY with tag '$PROVISION_TAG'"
+
