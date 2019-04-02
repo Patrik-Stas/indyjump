@@ -1,0 +1,21 @@
+#!/bin/bash
+source $(dirname "$0")/util.sh
+
+LIBRARY="$1"
+
+validateLibName "$LIBRARY" || exit 1
+if [ -z "$LIBRARY" ]; then
+	exitWithErrMsg "Version was not specified"
+fi
+
+SRC_BASE_PATH=`getBasePath "$LIBRARY"` || exit 1
+CARGO_TOML_PATH="$SRC_BASE_PATH/Cargo.toml"
+
+
+if [ ! -f "$CARGO_TOML_PATH" ]; then
+   	exitWithErrMsg "Rust project file Cargo.toml was not found in directory $SRC_BASE_PATH"
+else 
+	(cd "$SRC_BASE_PATH"; cargo build;)
+	echo "Artefacts at $SRC_BASE_PATH/target/debug:"
+	ls -lah "$SRC_BASE_PATH/target/debug" | grep -i "$LIBRARY"
+fi

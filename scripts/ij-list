@@ -1,0 +1,5 @@
+#!/bin/bash
+source $(dirname "$0")/util.sh
+
+echo "Available indyjump-managed indy binary versions:"
+ls  "`getStoragePath`/"* | tr -s " " | awk -F"/" '{print $NF}' | awk -F"-" '{print $1}' | uniq

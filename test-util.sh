@@ -46,8 +46,8 @@ indySymlinkPath=`getSymlinkPath "libindy"`
 vcxSymlinkPath=`getSymlinkPath "libvcx"`
 nullpaySymlinkPath=`getSymlinkPath "libnullpay"`
 
-echo "indy indySymlinkPath  is '$indySymlinkPath'"
-echo "vcx vcxSymlinkPath  is '$vcxSymlinkPath'"
-echo "nullpay nullpaySymlinkPath  is '$nullpaySymlinkPath'"
+echo "indy indySymlinkPath is '$indySymlinkPath'"
+echo "vcx vcxSymlinkPath is '$vcxSymlinkPath'"
+echo "nullpay nullpaySymlinkPath is '$nullpaySymlinkPath'"
 
 

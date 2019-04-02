@@ -1,0 +1,11 @@
+#!/bin/bash
+source $(dirname "$0")/util.sh
+
+echo "Active indy binaries:"
+ls -l `getSysLibsPath` | grep -v ^d | grep indy | tr -s ' ' | cut -d' ' -f 11
+
+echo -e "\nActive indy binaries details:"
+ls -lLh `getSysLibsPath` | grep -v ^d | egrep '(libindy|libnullpay|libvcx)'
+
+echo -e "\nSymlinks:"
+ls -l `getSysLibsPath` | grep -v ^d | grep indy 

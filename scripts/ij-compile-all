@@ -1,0 +1,6 @@
+#!/bin/bash
+source $(dirname "$0")/util.sh
+
+$(dirname "$0")/ij-compile-one "libindy"  || exitWithErrMsg "Failed to compile libindy" 
+$(dirname "$0")/ij-compile-one "libvcx"   || exitWithErrMsg "Failed to compile libvcx" 
+$(dirname "$0")/ij-compile-one "libnullpay"  || exitWithErrMsg "Failed to compile libnullpay" 
