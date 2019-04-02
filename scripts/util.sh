@@ -26,7 +26,20 @@ function validateLibName() {
 }
 
 function getSysLibsPath() {
-  echo "/usr/local/lib"
+  case "$(uname -s)" in
+     Darwin)
+       echo "/usr/local/lib"
+       return 0
+       ;;
+     Linux)
+       echo "/usr/lib"
+       return 0
+       ;;
+     *)
+       errcho 'Unsupported OS.' 
+       exit 1
+       ;;
+  esac
 }
 
 function getStoragePath() {
