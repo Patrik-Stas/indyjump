@@ -15,7 +15,11 @@ CARGO_TOML_PATH="$SRC_BASE_PATH/Cargo.toml"
 if [ ! -f "$CARGO_TOML_PATH" ]; then
    	exitWithErrMsg "Rust project file Cargo.toml was not found in directory $SRC_BASE_PATH"
 else 
-	(cd "$SRC_BASE_PATH"; cargo build;)
-	echo "Artefacts at $SRC_BASE_PATH/target/debug:"
-	ls -lah "$SRC_BASE_PATH/target/debug" | grep -i "$LIBRARY"
+	(
+		cd "$SRC_BASE_PATH"; 
+		echo "Building '$LIBRARY' at $SRC_BASE_PATH/target/debug"
+		cargo build;
+		echo "Artefacts at $SRC_BASE_PATH/target/debug"
+		ls -lah "$SRC_BASE_PATH/target/debug" | grep -i "$LIBRARY"
+	)
 fi
