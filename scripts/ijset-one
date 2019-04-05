@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 source $(dirname "$0")/util.sh
 
 LIBRARY="$1"
@@ -17,9 +17,9 @@ if [ ! -f "$MANAGED_BINARY" ]; then
    exitWithErrMsg "$LIBRARY tagged '$PROVISION_TAG' not found. File '$MANAGED_BINARY' does not exist. Won't change the indy version."
 fi
 
-SIMLINK_PATH=`getSymlinkPath "$LIBRARY"` || exitWithErrMsg "Failed to resolve symlink path for library '$LIBRARY'"     
+SIMLINK_PATH=`getSymlinkPath "$LIBRARY"` || exitWithErrMsg "Failed to resolve symlink path for library '$LIBRARY'"
 rm "$SIMLINK_PATH" 2>/dev/null || :
 
-ln -s "$MANAGED_BINARY" "$SIMLINK_PATH" || exitWithErrMsg "Failed to create symlink '$SIMLINK_PATH' ---> '$MANAGED_BINARY'" 
+ln -s "$MANAGED_BINARY" "$SIMLINK_PATH" || exitWithErrMsg "Failed to create symlink '$SIMLINK_PATH' ---> '$MANAGED_BINARY'"
 echo "Version of '$LIBRARY' changed to '$PROVISION_TAG'"
 

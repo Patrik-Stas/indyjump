@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 source $(dirname "$0")/util.sh
 
 LIBRARY="$1"
@@ -14,9 +14,9 @@ CARGO_TOML_PATH="$SRC_BASE_PATH/Cargo.toml"
 
 if [ ! -f "$CARGO_TOML_PATH" ]; then
    	exitWithErrMsg "Rust project file Cargo.toml was not found in directory $SRC_BASE_PATH"
-else 
+else
 	(
-		cd "$SRC_BASE_PATH"; 
+		cd "$SRC_BASE_PATH";
 		echo "Building '$LIBRARY' at $SRC_BASE_PATH/target/debug"
 		cargo build;
 		echo "Artefacts at $SRC_BASE_PATH/target/debug"

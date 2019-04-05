@@ -1,8 +1,4 @@
-target_dir="$HOME/.indyjump"
-rm -r "$target_dir" || :
-mkdir -p "$target_dir"
-cp -r "./scripts/"* "$target_dir"
+#!/usr/bin/env bash
+source $(dirname "$0")/reinstall.sh
 echo "export PATH='$PATH:$target_dir'" >> "$HOME/.bashrc"
-echo "Installed scripts:"
-ls -lah "$target_dir"
 

@@ -1,8 +1,8 @@
 source $(dirname "$0")/scripts/util.sh
 
-
 ext=`getLibExtension`
 echo "Your system is susing library extension '$ext'"
+
 
 indyBase=`getBasePath "libindy"`
 vcxBase=`getBasePath "libvcx"`
@@ -10,6 +10,7 @@ nullpayBase=`getBasePath "libnullpay"`
 echo "Indy base directory is '$indyBase'"
 echo "Vcx base directory is '$vcxBase'"
 echo "Nullpay base directory is '$nullpayBase'"
+
 
 indyLibname=`getLibraryFilename "libindy"`
 vcxLibname=`getLibraryFilename "libvcx"`
@@ -38,8 +39,6 @@ nullpayManagedPath=`getPathForManagedBinary "libnullpay" "master"`
 echo "indy Managed path for TAG 'master' is '$indyManagedPath'"
 echo "vcx Managed path for TAG 'master' is '$vcxManagedPath'"
 echo "nullpay Managed path for TAG 'master' is '$nullpayManagedPath'"
-
-
 
 
 indySymlinkPath=`getSymlinkPath "libindy"`

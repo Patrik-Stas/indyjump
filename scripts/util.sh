@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 INDYJUMP_INDY="libindy"
 INDYJUMP_VCX="libvcx"
 INDYJUMP_NULLPAY="libnullpay"
@@ -36,7 +37,7 @@ function getSysLibsPath() {
        return 0
        ;;
      *)
-       errcho 'Unsupported OS.' 
+       errcho 'Unsupported OS.'
        exit 1
        ;;
   esac
@@ -100,7 +101,7 @@ function getLibExtension() {
        return 0
        ;;
      *)
-       errcho 'Unsupported OS.' 
+       errcho 'Unsupported OS.'
        exit 1
        ;;
   esac
@@ -110,7 +111,7 @@ function getBasePath(){
   local LIBNAME="$1"
   validateLibName "$LIBNAME" || exit 1
 
-  if [ -z "$INDY_SDK_SRC" ]; then 
+  if [ -z "$INDY_SDK_SRC" ]; then
     errcho "getBasePath() >>> Exiting. Env variable 'INDY_SDK_SRC' is not set"
     exit 1
   fi
@@ -141,7 +142,7 @@ function getLibraryFilename() {
    "$INDYJUMP_NULLPAY")
      echo "libnullpay.`getLibExtension`"
      ;;
-   esac   
+   esac
 }
 
 

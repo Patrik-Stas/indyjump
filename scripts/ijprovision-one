@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 source $(dirname "$0")/util.sh
 
 
@@ -26,7 +26,7 @@ fi;
 INDYJUMP_TARGET=`getPathForManagedBinary "$LIBRARY" "$PROVISION_TAG"`
 echo "The binary will be copied to: $INDYJUMP_TARGET"
 
-MANAGED_BINARY_DIR=`dirname "$INDYJUMP_TARGET"`  || exitWithErrMsg "Failed to determine directory where indyjump managed binary will be stored."     
+MANAGED_BINARY_DIR=`dirname "$INDYJUMP_TARGET"`  || exitWithErrMsg "Failed to determine directory where indyjump managed binary will be stored."
 mkdir -p "$MANAGED_BINARY_DIR"
 
 cp "$LIB_PATH" "$INDYJUMP_TARGET"
