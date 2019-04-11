@@ -3,6 +3,9 @@ IndyJump is tool manage `libindy`, `libvcx` and `libnullpay` libraries. `Indyjum
 help you to quickly compile `indy-sdk` binaries and mark them with a tag. Then you 
 can quickly jump between different version of your `indy-sdk` binaries.
 
+![Alt Text](./indyjump-demo.gif)
+
+
 # How would you use this
 Here's an workflow example:
 - You checkout `1.8.2` revision of `indy-sdk` repo. 
@@ -10,39 +13,50 @@ Here's an workflow example:
 - Instead of compiling manually and copying the artifact to `/usr/local/lib`
  or `/usr/local/lib`
 you will use `indyjump`!
-- Simply run `ij-compile-provision-set-all foobar-1.8.2`. It will:
+- Simply run `ijcreate foobar1.8.2`. It will:
 	- Enter currently checked out indy-sdk repo 
 	- Compile `libindy`, `libvcx`, `libnullpay`
 	- Track these compiled binaries in dedicated `indyjump` directory as 
-	version `foobar-1.8.2`
+	version `foobar1.8.2`
 	- Create symlinks to these binaries in your system library directory 
 - Done!
 - Later you'll decide to switch to your own version of binaries you've compiled
  yesterday. 
-- You'd do that by running: `ij-set-all 1.8.1-with-my-changes`
+- You'd do that by running: `ij-set 1.8.1.withMyChanges`
 
 # Commands
 
-### `ijcheck`
+### `ijinfo [-v]`
+##### Displays information about active indy provision
 ```
-> ijcheck
+> ijinfo
+You are currently using these indy binaries:
 
-Active indy binaries:
-/usr/local/lib/indyjump/latest-libindy.dylib
-/usr/local/lib/indyjump/latest-libnullpay.dylib
-/usr/local/lib/indyjump/latest-libvcx.dylib
+-> /usr/local/lib/indyjump/1.8.2-libindy.dylib
+-> /usr/local/lib/indyjump/1.8.2-libnullpay.dylib
+-> /usr/local/lib/indyjump/1.8.2-libvcx.dylib
+```
+
+```
+> ijinfo -v 
+You are currently using these indy binaries:
+
+-> /usr/local/lib/indyjump/1.8.2-libindy.dylib
+-> /usr/local/lib/indyjump/1.8.2-libnullpay.dylib
+-> /usr/local/lib/indyjump/1.8.2-libvcx.dylib
 
 Active indy binaries details:
--rwx--x--x   1 username  groupname    38M Apr  2 17:45 libindy.dylib
--rwx--x--x   1 username  groupname   2.6M Apr  2 17:45 libnullpay.dylib
--rwxr-xr-x   1 username  groupname    35M Apr  2 17:45 libvcx.dylib
+-rwxr-xr-x   1 prague  admin    38M Apr  2 23:39 libindy.dylib
+-rwxr-xr-x   1 prague  admin   2.6M Apr  2 23:39 libnullpay.dylib
+-rwxr-xr-x   1 prague  admin    35M Apr  2 23:39 libvcx.dylib
 
 Symlinks:
-lrwxr-xr-x   1 username  groupname       44 Apr  2 17:58 libindy.dylib -> /usr/local/lib/indyjump/latest-libindy.dylib
-lrwxr-xr-x   1 username  groupname       47 Apr  2 17:58 libnullpay.dylib -> /usr/local/lib/indyjump/latest-libnullpay.dylib
-lrwxr-xr-x   1 username  groupname       43 Apr  2 17:58 libvcx.dylib -> /usr/local/lib/indyjump/latest-libvcx.dylib
+lrwxr-xr-x   1 prague  admin       43 Apr 11 21:08 libindy.dylib -> /usr/local/lib/indyjump/1.8.2-libindy.dylib
+lrwxr-xr-x   1 prague  admin       46 Apr 11 21:08 libnullpay.dylib -> /usr/local/lib/indyjump/1.8.2-libnullpay.dylib
+lrwxr-xr-x   1 prague  admin       42 Apr 11 21:08 libvcx.dylib -> /usr/local/lib/indyjump/1.8.2-libvcx.dylib
 ```
-### `ijcompile-one [libindy|libvcx|libnullpay]`
+### `ijcompile-one "libindy"|"libvcx"|"libnullpay"`
+##### Compiles selected library by using the code in IndySDK directory
 ```
 > ijcompile-one libindy
 
@@ -54,9 +68,10 @@ Artefacts at /Users/prague/dev/hyperledger/indy-sdk/libindy/target/debug
 -rwx--x--x    2 prague  staff    38M Mar 26 16:00 libindy.dylib
 -rw-------    2 prague  staff   110M Mar 26 16:00 libindy.rlib
 ```
-### `ijcompile-provision-set-all [provision-name]`
+### `ijcreate <provision-name>`
+##### Compiles binaries in IndySDK repo, provisions them under selected name and activates this provision
 ```
-> ijcompile-provision-set-all experiment
+> ijcreate experiment
 
 Building 'libindy' at /Users/prague/dev/hyperledger/indy-sdk/libindy/target/debug
     Finished dev [unoptimized + debuginfo] target(s) in 0.53s
@@ -93,9 +108,10 @@ Proovisioned libvcx with tag 'experiment'
 Version of 'libvcx' changed to 'experiment'
 ```
 
-### `ijlist`
+### `ijversions`
+##### Lists available versions of binaries on your system
 ```
-> ijlist
+> ijversions
 
 Available indyjump-managed indy binary versions:
 1.7.0
@@ -106,9 +122,10 @@ latest
 master
 ```
 
-### `ijprovision-all`
+### `ijprovision <provision-name>` 
+##### Creates new version for all libraries by using what's currently compiled in indysdk directory
 ```
-> ijprovision-all latest
+> ijprovision latest
 
 Will take library at: /Users/prague/dev/hyperledger/indy-sdk/libindy/target/debug/libindy.dylib
 The binary will be copied to: /usr/local/lib/indyjump/latest-libindy.dylib
@@ -121,7 +138,8 @@ The binary will be copied to: /usr/local/lib/indyjump/latest-libnullpay.dylib
 Proovisioned libnullpay with tag 'latest'
 ```
 
-### `ijprovision-one`
+### `ijprovision-one "libindy"|"libvcx"|"libnullpay" <provision-name>`
+##### Creates new version for selected library by using what's currently compiled in indysdk directory
 
 ```
 > ijprovision-one libvcx latest
@@ -132,16 +150,18 @@ Proovisioned libvcx with tag 'latest'
 ```
 
 
-### `ijset-all`
+### `ijset <provision-name>` 
+##### Changes active provision for all lbiraries - `libindy`, `libvcx` and `libnullpay`
 ```
-> ijset-all experiment
+> ijset experiment
 
 Version of 'libindy' changed to 'experiment'
 Version of 'libvcx' changed to 'experiment'
 Version of 'libnullpay' changed to 'experiment'
 ```
 
-### `ijset-one`
+### `ijset-one "libindy"|"libvcx"|"libnullpay" <provision-name>` 
+##### Changes active provision for selected library
 ```
 > ijset-one libindy master
 
