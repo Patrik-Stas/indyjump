@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 1 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+LIBRARY="$1"
+validateLibName "$LIBRARY" || exit 1
+
+if [ "$1" = "-v"  -o "$2" = "-v" ]; then
+    getActiveProvisionName "$LIBRARY"
+
+    echo -e "\nActive indy binaries details:"
+    ls -lLh `getSysLibsPath` | grep -v ^d | grep "$LIBRARY"
+
+    echo -e "\nSymlinks:"
+    ls -l `getSysLibsPath` | grep -v ^d | grep indyjump | grep "$LIBRARY"
+else
+    getActiveProvisionName "$LIBRARY"
+fi;
+
+

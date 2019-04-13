@@ -1,16 +1,28 @@
 #!/usr/bin/env bash
-source $(dirname "$0")/util.sh
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 1 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
 PROVISION_TAG=${1:-latest}
+validateProvisionName "$PROVISION_TAG" || exit 1
+
+echo -e "\nBuilding libraries! Will provision them as:'$PROVISION_TAG'\n"
 
 
 $(dirname "$0")/ijcompile-one "libindy" || exitWithErrMsg "Failed to compile libindy"
-$(dirname "$0")/ijprovision-one "libindy" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libindy as '$PROVISION_TAG'"
-$(dirname "$0")/ijset-one "libindy" "$PROVISION_TAG" || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libindy"
+$(dirname "$0")/ijadd-one "libindy" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libindy as '$PROVISION_TAG'"
+$(dirname "$0")/ijump-one "libindy" "$PROVISION_TAG" || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libindy"
 
 $(dirname "$0")/ijcompile-one "libnullpay" || exitWithErrMsg "Failed to compile libnullpay"
-$(dirname "$0")/ijprovision-one "libnullpay" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libnullpay as '$PROVISION_TAG'"
-$(dirname "$0")/ijset-one "libnullpay" "$PROVISION_TAG" || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libnullpay"
+$(dirname "$0")/ijadd-one "libnullpay" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libnullpay as '$PROVISION_TAG'"
+$(dirname "$0")/ijump-one "libnullpay" "$PROVISION_TAG" || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libnullpay"
 
-$(dirname "$0")/ijcompile-one "libvcx" "$PROVISION_TAG" || exitWithErrMsg "Failed to compile libvcx"
-$(dirname "$0")/ijprovision-one "libvcx" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libvcx as '$PROVISION_TAG'"
-$(dirname "$0")/ijset-one "libvcx" "$PROVISION_TAG"  || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libvcx"
+$(dirname "$0")/ijcompile-one "libvcx" || exitWithErrMsg "Failed to compile libvcx"
+$(dirname "$0")/ijadd-one "libvcx" "$PROVISION_TAG" || exitWithErrMsg "Failed to provision libvcx as '$PROVISION_TAG'"
+$(dirname "$0")/ijump-one "libvcx" "$PROVISION_TAG"  || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libvcx"
+
+echo -e "\n\nProvisions:"
+$(dirname "$0")/ijstatus

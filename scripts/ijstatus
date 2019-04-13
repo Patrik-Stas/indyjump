@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 0 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+activeLibindyProvision=`getActiveProvisionName libindy`
+activeVcxProvision=`getActiveProvisionName libvcx`
+activeNullPayProvision=`getActiveProvisionName libnullpay`
+
+versionList=`listAvailableProvisions`
+
+while read -r provisionName; do
+  librariesForProvision=`getLibrariesForProvision "$provisionName"`
+  isLibindyProvisioned=`isLibraryUnderProvision libindy "$provisionName"`
+  isLibvcxProvisioned=`isLibraryUnderProvision libvcx "$provisionName"`
+  isLibNullPayProvisioned=`isLibraryUnderProvision libnullpay "$provisionName"`
+
+  [ "$activeLibindyProvision"  == "$provisionName" -o \
+    "$activeVcxProvision"  == "$provisionName" -o \
+    "$activeNullPayProvision"  == "$provisionName" ] && echo -n "> "
+
+  echo -en "`magentaEcho "$provisionName"`  ::: "
+  if [ "$isLibindyProvisioned" == 'true' ]; then
+    if [ "$provisionName" == "$activeLibindyProvision" ]; then
+        echo -en `greenEcho "libindy "`
+    else
+        echo -n "libindy "
+    fi;
+  fi;
+  if [ "$isLibvcxProvisioned" == 'true' ]; then
+    if [ "$provisionName" == "$activeVcxProvision" ]; then
+        echo -en `greenEcho "libvcx "`
+    else
+        echo -n "libvcx "
+    fi;
+  fi;
+  if [ "$isLibNullPayProvisioned" == 'true' ]; then
+    if [ "$provisionName" == "$activeNullPayProvision" ]; then
+        echo -en `greenEcho "libnullpay "`
+    else
+        echo -n "libnullpay "
+    fi;
+  fi;
+  echo " "
+done < <(echo -e "$versionList")

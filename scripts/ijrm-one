@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 2 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+LIBRARY="$1"
+PROVISION_TAG="$2"
+
+validateLibName "$LIBRARY" || exit 1
+validateProvisionName "$PROVISION_TAG" || exit 1
+activeProvision=`getActiveProvisionName "$LIBRARY"`
+
+if [ "$activeProvision" == "$PROVISION_TAG" ]; then
+    exitWithErrMsg  "Can't delete '${PROVISION_TAG}' provision for $LIBRARY, because it's currently active."
+fi;
+
+BINARY_PATH=`getProvisionLibraryPathIfExists "$LIBRARY" "$PROVISION_TAG"` || exit 1
+rm $BINARY_PATH
+
+echo "Deleted '$PROVISION_TAG' provision of $LIBRARY"
+

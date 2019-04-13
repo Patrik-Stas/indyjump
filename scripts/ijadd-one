@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 2 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+LIBRARY="$1"
+PROVISION_TAG="$2"
+
+validateLibName "$LIBRARY" || exit 1
+validateProvisionName "$PROVISION_TAG" || exit 1
+
+
+LIB_PATH=`getFullPath "$LIBRARY"` || exit 1
+echo "Will take library at: $LIB_PATH"
+if [ ! -f "$LIB_PATH" ]; then
+   exitWithErrMsg "File $LIB_PATH does not exist."
+fi;
+
+INDYJUMP_TARGET=`getPathForManagedBinary "$LIBRARY" "$PROVISION_TAG"`
+echo "The binary will be copied to: $INDYJUMP_TARGET"
+
+MANAGED_BINARY_DIR=`dirname "$INDYJUMP_TARGET"`  || exitWithErrMsg "Failed to determine directory where indyjump managed binary will be stored."
+mkdir -p "$MANAGED_BINARY_DIR"
+
+cp "$LIB_PATH" "$INDYJUMP_TARGET"
+echo "Proovisioned $LIBRARY with tag '$PROVISION_TAG'"
+

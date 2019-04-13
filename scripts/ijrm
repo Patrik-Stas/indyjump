@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 1 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+PROVISION_TAG="$1"
+validateProvisionName "$PROVISION_TAG"
+
+$(dirname "$0")/ijrm-one "libindy" "$PROVISION_TAG" || errcho "Failed to remove $PROVISION_TAG provision of libindy"
+$(dirname "$0")/ijrm-one "libvcx" "$PROVISION_TAG"  || errcho "Failed to remove $PROVISION_TAG provision of libvcx"
+$(dirname "$0")/ijrm-one "libnullpay" "$PROVISION_TAG" || errcho "Failed to remove $PROVISION_TAG provision of libnullpay"
+

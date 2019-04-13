@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 1 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+PROVISION_TAG="$1"
+validateProvisionName "$PROVISION_TAG"
+
+$(dirname "$0")/ijadd-one "libindy" "$PROVISION_TAG" || errcho "Failed to provision libindy"
+$(dirname "$0")/ijadd-one "libvcx" "$PROVISION_TAG"  || errcho "Failed to provision libvcx"
+$(dirname "$0")/ijadd-one "libnullpay" "$PROVISION_TAG" || errcho "Failed to provision libnullpay"

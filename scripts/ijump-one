@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# INDYJUMPSCRIPT
+
+source $(dirname "$0")/indyjump-utils.sh
+if [ "$#" -ne 2 ]; then
+    exitWithErrMsg "Illegal number of parameters"
+fi
+
+LIBRARY="$1"
+PROVISION_TAG="$2"
+
+validateLibName "$LIBRARY" || exit 1
+validateProvisionName "$PROVISION_TAG" || exit 1
+
+MANAGED_BINARY=`getPathForManagedBinary "$LIBRARY" "$PROVISION_TAG"` || exitWithErrMsg 'Failed to resolve path for indymjump managed binary.'
+if [ ! -f "$MANAGED_BINARY" ]; then
+   exitWithErrMsg "$LIBRARY tagged '$PROVISION_TAG' not found. File '$MANAGED_BINARY' does not exist. Won't change the indy version."
+fi
+
+SIMLINK_PATH=`getSymlinkPath "$LIBRARY"` || exitWithErrMsg "Failed to resolve symlink path for library '$LIBRARY'"
+rm "$SIMLINK_PATH" 2>/dev/null || :
+
+ln -s "$MANAGED_BINARY" "$SIMLINK_PATH" || exitWithErrMsg "Failed to create symlink '$SIMLINK_PATH' ---> '$MANAGED_BINARY'"
+echo "Version of '$LIBRARY' changed to '$PROVISION_TAG'"
+
