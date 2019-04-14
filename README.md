@@ -45,16 +45,16 @@ Therefore you can quickly jump between different version of your `indy-sdk` bina
 
 `echo 'export INDY_SDK_SRC=<path_to_your_indysdk>' >> ~/.bashrc`
 
-
-sudo INDY_SDK_SRC="$INDY_SDK_SRC" ijcreate boo
-
-# Commands
+# Usage
 - On OSX you can use all commands straight away.
 - On Linux, you will have to use `sudo`, because scripts are manipulating protected directory `/usr/lib`.
 Your `sudo` will not see `INDY_SDK_SRC` variable by default, so you either run indyjump commands as 
 
     - `sudo -E <indjump command>` to pass env variable from current bash session
     - `sudo INDY_SDK_SRC="$INDY_SDK_SRC" <indjump command>` to pass only `INDY_SDK_SRC` value
+
+
+# Commands
 
 ### `ijstatus`
 ##### Displays information about active indy provision
