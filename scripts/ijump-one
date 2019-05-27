@@ -18,8 +18,21 @@ if [ ! -f "$MANAGED_BINARY" ]; then
 fi
 
 SIMLINK_PATH=`getSymlinkPath "$LIBRARY"` || exitWithErrMsg "Failed to resolve symlink path for library '$LIBRARY'"
-rm "$SIMLINK_PATH" 2>/dev/null || :
 
-ln -s "$MANAGED_BINARY" "$SIMLINK_PATH" || exitWithErrMsg "Failed to create symlink '$SIMLINK_PATH' ---> '$MANAGED_BINARY'"
+
+case "$(uname -s)" in
+     Darwin)
+        rm "$SIMLINK_PATH" 2>/dev/null || :
+        ln -s "$MANAGED_BINARY" "$SIMLINK_PATH" || exitWithErrMsg "Failed to create symlink '$SIMLINK_PATH' ---> '$MANAGED_BINARY'"
+       ;;
+     Linux)
+        sudo rm "$SIMLINK_PATH" 2>/dev/null || :
+        sudo ln -s "$MANAGED_BINARY" "$SIMLINK_PATH" || exitWithErrMsg "Failed to create symlink '$SIMLINK_PATH' ---> '$MANAGED_BINARY'"
+       ;;
+     *)
+       exitWithErrMsg 'Unsupported OS.'
+       ;;
+  esac
+
 echo "Version of '$LIBRARY' changed to '$PROVISION_TAG'"
 

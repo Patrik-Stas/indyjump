@@ -18,7 +18,19 @@ if [ "$activeProvision" == "$PROVISION_TAG" ]; then
 fi;
 
 BINARY_PATH=`getProvisionLibraryPathIfExists "$LIBRARY" "$PROVISION_TAG"` || exit 1
-rm $BINARY_PATH
+
+case "$(uname -s)" in
+     Darwin)
+       rm "$BINARY_PATH"
+       ;;
+     Linux)
+       sudo rm "$BINARY_PATH"
+       ;;
+     *)
+       exitWithErrMsg 'Unsupported OS.'
+       ;;
+  esac
+
 
 echo "Deleted '$PROVISION_TAG' provision of $LIBRARY"
 

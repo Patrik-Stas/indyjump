@@ -23,8 +23,20 @@ INDYJUMP_TARGET=`getPathForManagedBinary "$LIBRARY" "$PROVISION_TAG"`
 echo "The binary will be copied to: $INDYJUMP_TARGET"
 
 MANAGED_BINARY_DIR=`dirname "$INDYJUMP_TARGET"`  || exitWithErrMsg "Failed to determine directory where indyjump managed binary will be stored."
-mkdir -p "$MANAGED_BINARY_DIR"
 
-cp "$LIB_PATH" "$INDYJUMP_TARGET"
+case "$(uname -s)" in
+     Darwin)
+        mkdir -p "$MANAGED_BINARY_DIR"
+       cp "$LIB_PATH" "$INDYJUMP_TARGET"
+       ;;
+     Linux)
+       sudo mkdir -p "$MANAGED_BINARY_DIR"
+       sudo cp "$LIB_PATH" "$INDYJUMP_TARGET"
+       ;;
+     *)
+       exitWithErrMsg 'Unsupported OS.'
+       ;;
+  esac
+
 echo "Proovisioned $LIBRARY with tag '$PROVISION_TAG'"
 
