@@ -157,6 +157,20 @@ function manageIndyjumpBinary() {
   fi
 }
 
+function validateBuildMode() {
+    local BUILD_MODE="$1"
+    case "$BUILD_MODE" in
+     debug)
+       return 0
+       ;;
+     release)
+       return 0
+       ;;
+     *)
+       exitWithErrMsg "Invalid build mode '$BUILD_MODE'."
+       ;;
+  esac
+}
 
 function getLibExtension() {
   case "$(uname -s)" in
@@ -211,13 +225,16 @@ function getLibraryFilename() {
    esac
 }
 
-
+# Gets full path of a library libindy|libvcx|libnullpay based on repo path and whether debug/release binary
+# is being seeked for
 function getFullPath() {
   local LIBNAME="$1"
   validateLibName "$LIBNAME" || exit 1
+  local BUILD_MODE=${2:-debug}
+  validateBuildMode "$BUILD_MODE" || exit 1
 
   local basePath=`getBasePath "$LIBNAME"` || exit 1
   local libraryFilename=`getLibraryFilename "$LIBNAME"` || exit 1
-  local buildPath="target/debug"
+  local buildPath="target/$BUILD_MODE"
   echo "$basePath/$buildPath/$libraryFilename"
 }

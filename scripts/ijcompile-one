@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # INDYJUMPSCRIPT
 source $(dirname "$0")/indyjump-utils.sh
-if [ "$#" -ne 1 ]; then
+if [ "$#" -gt 2 ]; then
     exitWithErrMsg "Illegal number of parameters"
 fi
 
@@ -11,9 +11,27 @@ validateLibName "$LIBRARY" || exit 1
 SRC_BASE_PATH=`getBasePath "$LIBRARY"` || exit 1
 validatePathIsCargoProject "$SRC_BASE_PATH" || exit 1
 
+BUILD_MODE=${2:-debug}
+validateBuildMode "$BUILD_MODE" || exit 1
+
 cd "$SRC_BASE_PATH";
-echo "Building '$LIBRARY' at $SRC_BASE_PATH/target/debug"
-cargo build;
-echo "Artefacts at $SRC_BASE_PATH/target/debug"
-ls -lah "$SRC_BASE_PATH/target/debug" | grep -i "$LIBRARY"
+
+TARGET_PATH=`getFullPath "$LIBRARY" "$BUILD_MODE"` || exit 1
+echo "Building '$LIBRARY' in '$BUILD_MODE' mode at path: '$TARGET_PATH'"
+
+case "$BUILD_MODE" in
+ debug)
+   cargo build;
+   ;;
+ release)
+   cargo build --release;
+   ;;
+ *)
+   exitWithErrMsg "Invalid build mode '$BUILD_MODE'."
+   ;;
+esac
+
+
+echo "Build artefact in path: $TARGET_PATH"
+ls -lah "$TARGET_PATH" | grep -i "$LIBRARY"
 
