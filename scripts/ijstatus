@@ -9,6 +9,7 @@ fi
 activeLibindyProvision=`getActiveProvisionName libindy`
 activeVcxProvision=`getActiveProvisionName libvcx`
 activeNullPayProvision=`getActiveProvisionName libnullpay`
+activePgWalletProvision=`getActiveProvisionName libindystrgpostgres`
 
 versionList=`listAvailableProvisions`
 
@@ -17,10 +18,12 @@ while read -r provisionName; do
   isLibindyProvisioned=`isLibraryUnderProvision libindy "$provisionName"`
   isLibvcxProvisioned=`isLibraryUnderProvision libvcx "$provisionName"`
   isLibNullPayProvisioned=`isLibraryUnderProvision libnullpay "$provisionName"`
+  isLibPgWalletProvisioned=`isLibraryUnderProvision libindystrgpostgres "$provisionName"`
 
   [ "$activeLibindyProvision"  == "$provisionName" -o \
     "$activeVcxProvision"  == "$provisionName" -o \
-    "$activeNullPayProvision"  == "$provisionName" ] && echo -n "> "
+    "$activeNullPayProvision"  == "$provisionName" -o \
+    "$activePgWalletProvision"  == "$provisionName" ] && echo -n "> "
 
   echo -en "`magentaEcho "$provisionName"`  ::: "
   if [ "$isLibindyProvisioned" == 'true' ]; then
@@ -42,6 +45,13 @@ while read -r provisionName; do
         echo -en `greenEcho "libnullpay "`
     else
         echo -n "libnullpay "
+    fi;
+  fi;
+  if [ "$isLibPgWalletProvisioned" == 'true' ]; then
+    if [ "$provisionName" == "$activePgWalletProvision" ]; then
+        echo -en `greenEcho "libindystrgpostgres "`
+    else
+        echo -n "libindystrgpostgres "
     fi;
   fi;
   echo " "

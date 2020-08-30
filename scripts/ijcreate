@@ -26,5 +26,9 @@ $(dirname "$0")/ijcompile-one "libvcx" "$BUILD_MODE"                      || exi
 $(dirname "$0")/ijadd-one     "libvcx" "$PROVISION_TAG" "$BUILD_MODE"     || exitWithErrMsg "Failed to provision libvcx as '$PROVISION_TAG'"
 $(dirname "$0")/ijump-one     "libvcx" "$PROVISION_TAG"                   || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libvcx"
 
+$(dirname "$0")/ijcompile-one "libindystrgpostgres" "$BUILD_MODE"                  || exitWithErrMsg "Failed to compile libindystrgpostgres"
+$(dirname "$0")/ijadd-one     "libindystrgpostgres" "$PROVISION_TAG" "$BUILD_MODE" || exitWithErrMsg "Failed to provision libindystrgpostgres as '$PROVISION_TAG'"
+$(dirname "$0")/ijump-one     "libindystrgpostgres" "$PROVISION_TAG"               || exitWithErrMsg "Failed to activate '$PROVISION_TAG' provision of libindystrgpostgres"
+
 echo -e "\n\nProvisions:"
 $(dirname "$0")/ijstatus

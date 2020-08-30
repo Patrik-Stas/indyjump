@@ -12,4 +12,5 @@ validateProvisionName "$PROVISION_TAG"
 $(dirname "$0")/ijrm-one "libindy" "$PROVISION_TAG" || errcho "Failed to remove $PROVISION_TAG provision of libindy"
 $(dirname "$0")/ijrm-one "libvcx" "$PROVISION_TAG"  || errcho "Failed to remove $PROVISION_TAG provision of libvcx"
 $(dirname "$0")/ijrm-one "libnullpay" "$PROVISION_TAG" || errcho "Failed to remove $PROVISION_TAG provision of libnullpay"
+$(dirname "$0")/ijrm-one "libindystrgpostgres" "$PROVISION_TAG" || errcho "Failed to remove $PROVISION_TAG provision of libindystrgpostgres"
 

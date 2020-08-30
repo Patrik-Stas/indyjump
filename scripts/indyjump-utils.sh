@@ -4,6 +4,7 @@
 INDYJUMP_INDY="libindy"
 INDYJUMP_VCX="libvcx"
 INDYJUMP_NULLPAY="libnullpay"
+INDYJUMP_PGWALLET="libindystrgpostgres"
 
 errcho(){ >&2 echo ">> ERROR: $@"; }
 
@@ -84,6 +85,8 @@ function validateLibName() {
        ;;
      "$INDYJUMP_NULLPAY")
        ;;
+     "$INDYJUMP_PGWALLET")
+       ;;
      *)
        exitWithErrMsg "Got library name '${LIBNAME}' Valid names for libraries are: '$INDYJUMP_INDY' '$INDYJUMP_VCX' '$INDYJUMP_NULLPAY'"
        ;;
@@ -93,7 +96,7 @@ function validateLibName() {
 function getActiveProvisionName() {
   local LIBNAME="$1"
   validateLibName "$LIBNAME" || exit 1
-  ls -l `getSysLibsPath` | grep -v ^d | grep indyjump | grep "$LIBNAME"| grep -o -e "->.*" | awk -F"/" '{print $NF}' |  awk -F"-" '{print $1}'
+  ls -l `getSysLibsPath` | grep -v ^d | grep indyjump | grep "$LIBNAME\.${getLibExtension}"| grep -o -e "->.*" | awk -F"/" '{print $NF}' |  awk -F"-" '{print $1}'
 }
 
 function getSysLibsPath() {
@@ -205,6 +208,9 @@ function getBasePath(){
      "$INDYJUMP_NULLPAY")
        echo "$INDY_SDK_SRC/libnullpay"
        ;;
+     "$INDYJUMP_PGWALLET")
+       echo "$INDY_SDK_SRC/experimental/plugins/postgres_storage"
+       ;;
   esac
 }
 
@@ -222,10 +228,13 @@ function getLibraryFilename() {
    "$INDYJUMP_NULLPAY")
      echo "libnullpay.`getLibExtension`"
      ;;
+   "$INDYJUMP_PGWALLET")
+     echo "libindystrgpostgres.`getLibExtension`"
+     ;;
    esac
 }
 
-# Gets full path of a library libindy|libvcx|libnullpay based on repo path and whether debug/release binary
+# Gets full path of a library libindy|libvcx|libnullpay|pgwallet based on repo path and whether debug/release binary
 # is being seeked for
 function getFullPath() {
   local LIBNAME="$1"

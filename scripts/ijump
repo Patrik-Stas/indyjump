@@ -12,3 +12,4 @@ validateProvisionName "$PROVISION_TAG" || exit 1
 $(dirname "$0")/ijump-one "libindy" "$PROVISION_TAG" || errcho "Coudln't change version of libindy to $PROVISION_TAG"
 $(dirname "$0")/ijump-one "libvcx" "$PROVISION_TAG"  || errcho "Coudln't change version of libvcx to $PROVISION_TAG"
 $(dirname "$0")/ijump-one "libnullpay" "$PROVISION_TAG" || errcho "Coudln't change version of libnullpay to $PROVISION_TAG"
+$(dirname "$0")/ijump-one "libindystrgpostgres" "$PROVISION_TAG" || errcho "Coudln't change version of libindystrgpostgres to $PROVISION_TAG"
